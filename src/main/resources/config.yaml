@@ -1,0 +1,6 @@
+driver:
+  chrome: c:/drivers/chromedriver.exe
+  firefox: c:/drivers/geckodriver.exe
+uri:
+  web: https://demo.nopcommerce.com
+  rest: http://localhost:3000
