@@ -41,3 +41,23 @@ gradle clean test --tests TestTwo  # class
 gradle clean test --tests TestTwo.*json*  # pattern of method
 gradle clean test --tests TestTwo."use excel sheet as data source"  # a specific method
 ```
+
+## Run in Docker
+
+### Build the image
+
+```sh
+docker build -t gradle-test .
+```
+
+### Run test
+
+```sh
+docker run -v gradle-repo:/root/.gradle/caches/modules-2/files-2.1 -v `pwd`:/app gradle-test sudo $gradle clean test
+```
+
+### Run a specific test method
+
+```sh
+docker run -v gradle-repo:/root/.gradle/caches/modules-2/files-2.1 -v `pwd`:/app gradle-test sudo $gradle clean test --tests TestOne."show page elements"
+```

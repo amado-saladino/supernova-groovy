@@ -2,5 +2,7 @@ driver:
   chrome: c:/drivers/chromedriver.exe
   firefox: c:/drivers/geckodriver.exe
 uri:
-  web: https://demo.nopcommerce.com
+  web: https://demo.nopcommerce.com/
   rest: http://localhost:3000
+wait:
+  default_wait: 30

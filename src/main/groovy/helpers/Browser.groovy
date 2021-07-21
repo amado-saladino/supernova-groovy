@@ -1,24 +1,34 @@
 package helpers
 
+import io.github.bonigarcia.wdm.WebDriverManager
 import org.openqa.selenium.chrome.ChromeDriver
 import org.openqa.selenium.chrome.ChromeOptions
 import org.openqa.selenium.firefox.FirefoxDriver
 import org.openqa.selenium.firefox.FirefoxOptions
+import org.openqa.selenium.remote.BrowserType
 import org.openqa.selenium.remote.CapabilityType
 
 import org.openqa.selenium.WebDriver
 
+import java.time.Duration
+
 class Browser {
     private static WebDriver driver
     private final static Map<String,Closure> browsers = [
-            'chrome': { h -> new ChromeDriver(chromeOptions(h)) },
-            'firefox': { h -> new FirefoxDriver(firefoxOptions(h)) }
+            (BrowserType.CHROME): { h ->
+                WebDriverManager.chromedriver().setup()
+                new ChromeDriver(chromeOptions(h)) },
+            (BrowserType.FIREFOX): { h ->
+                WebDriverManager.firefoxdriver().setup()
+                new FirefoxDriver(firefoxOptions(h)) }
     ]
 
-    static WebDriver selectBrowser(String browser='chrome',boolean headless=false) {
+    static WebDriver selectBrowser(String browser='chrome',boolean headless=true) {
+        def conf = ConfigReader.loadConfig()
         if (driver == null) {
             driver = browsers[browser](headless)
             driver.manage().window().maximize()
+            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(conf.wait.default_wait))
         }
         driver
     }
@@ -29,8 +39,6 @@ class Browser {
     }
 
     private static ChromeOptions chromeOptions(boolean headless) {
-        def conf = ConfigReader.loadConfig()
-        System.setProperty('webdriver.chrome.driver', conf.driver.chrome)
         ChromeOptions options = new ChromeOptions()
         HashMap<String, Object> chromePrefs = new HashMap<String, Object>()
         chromePrefs.put("profile.default.content_settings.popups", 0)
@@ -49,8 +57,6 @@ class Browser {
     }
 
     private static FirefoxOptions firefoxOptions(boolean headless) {
-        def conf = ConfigReader.loadConfig()
-        System.setProperty("webdriver.gecko.driver", conf.driver.firefox)
         FirefoxOptions options = new FirefoxOptions()
         //option.addPreference("browser.download.folderList", 2);
         //option.addPreference("browser.helperApps.neverAsk.saveToDisk", "application/pdf");
