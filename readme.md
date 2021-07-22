@@ -53,11 +53,25 @@ docker build -t gradle-test .
 ### Run test
 
 ```sh
-docker run -v gradle-repo:/root/.gradle/caches/modules-2/files-2.1 -v `pwd`:/app gradle-test sudo $gradle clean test
+docker run -v `pwd`:/app -v gradle-repo:/root/.gradle/caches/modules-2/files-2.1 -u root amadosaladino/selenium-gradle
 ```
 
 ### Run a specific test method
 
 ```sh
-docker run -v gradle-repo:/root/.gradle/caches/modules-2/files-2.1 -v `pwd`:/app gradle-test sudo $gradle clean test --tests TestOne."show page elements"
+docker run -v gradle-repo:/root/.gradle/caches/modules-2/files-2.1 -v `pwd`:/app -u root amadosaladino/selenium-gradle clean test --tests TestOne."show page elements"
+```
+
+## View Test Report
+
+```shell
+docker run --rm --name=report -d -v $PWD/build/reports/tests/test:/usr/share/nginx/html -p 80:80 nginx:1.14
+```
+
+## Screenshot Viewer
+
+Screenshots taken during test run could be displayed this way:
+
+```shell
+docker run -d -v $PWD/screenshots:/Pictures:ro -p 81:80 --name gallery ghcr.io/linuxserver/photoshow
 ```
