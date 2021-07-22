@@ -19,8 +19,8 @@ abstract class Page {
         jsRunner = (JavascriptExecutor) driver
         wait = new WaitUtils()
     }
-    protected <T> T runScript(String script, Object... args) {
-        (T) jsRunner.executeScript(script, args)
+    def runScript(String script, Object... args) {
+        jsRunner.executeScript(script, args)
     }
     void selectDropdownItem(WebElement comboElement, String option) {
         Select(comboElement).selectByVisibleText(option)
