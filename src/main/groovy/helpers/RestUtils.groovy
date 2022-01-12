@@ -80,4 +80,16 @@ class RestUtils {
         def res = given().body(body).contentType(ContentType.JSON).request(method,url,pathParams)
         deserialize(res)
     }
+
+    /**
+     * Send a request with path parameters
+     * @param url request url
+     * @param body payload to send, leave out if GET request
+     * @param method HTTP method
+     * @param pathParams Values to replace path parameters
+     * @return Response object
+     */
+    def sendRequest(String url, body, Method method, Object... pathParams) {
+        given().body(body).contentType(ContentType.JSON).request(method,url,pathParams)
+    }
 }

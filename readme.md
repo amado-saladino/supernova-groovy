@@ -14,7 +14,16 @@ Groovy Flavor of [Supernova](https://github.com/amado-saladino/supernova) framew
 ## JSON server
 
 Json server could run in a container, container components reside in `json-server` folder.
-This image can run in `Katacoda` playground. Json server can also run locally from `json-server` folder
+
+```shell
+docker run -d -p 81:80 -v $PWD:/data -e "DB=users.json" json-server:v1
+# or
+docker run -d -p 81:80 -v $PWD:/data -e "DB=users.json" ghcr.io/amado-saladino/json-server:v1
+```
+
+### port
+
+container port is defined in `json-server.json` config file
 
 ## Scripts
 

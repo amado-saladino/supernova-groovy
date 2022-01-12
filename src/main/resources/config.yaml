@@ -1,7 +1,9 @@
 driver:
   browser: chrome
+  headless: true
 uri:
   web: https://demo.nopcommerce.com/
-  rest: http://localhost:3000
+  rest: https://reqres.in
+  RESTJSON: localhost
 wait:
   default_wait: 30

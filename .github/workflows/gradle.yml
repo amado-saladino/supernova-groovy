@@ -1,0 +1,78 @@
+name: Groovy CI with Gradle
+
+on:
+  pull_request:
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: UI and API Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: login to container registry
+        run: docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
+      - name: start json-server container
+        run: >-
+          docker run -d --rm -p 81:80  -e "DB=users.json" 
+          -v ${{ github.workspace }}/json-server:/data ghcr.io/amado-saladino/json-server:v1
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+          cache: gradle
+
+      - name: test workspace
+        run: echo ${{ github.workspace }}
+
+      - name: call json server
+        run: curl localhost:81/users
+
+      - name: test with gradle
+        run: gradle clean test
+
+      - name: Test Report
+        if: always()
+        uses: ScaCap/action-surefire-report@v1.0.5
+        with:
+          check_name: Test Summary Report
+          github_token: ${{ github.token }}
+          report_paths: "build/test-results/test/TEST-*.xml"
+
+      - name: JUnit Report
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: JUnit Test Report
+          path: build/test-results/test/TEST-*.xml
+          reporter: java-junit
+          fail-on-error: 'false'
+
+      - name: HTML Test Report
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-report
+          path: "build/reports/tests/test/*"
+
+      - name: Upload Screenshots
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: screenshots
+          path: "screenshots/*"
