@@ -19,23 +19,29 @@ abstract class Page {
         jsRunner = (JavascriptExecutor) driver
         wait = new WaitUtils()
     }
+
     def runScript(String script, Object... args) {
         jsRunner.executeScript(script, args)
     }
+
     void selectDropdownItem(WebElement comboElement, String option) {
         Select(comboElement).selectByVisibleText(option)
     }
+
     void selectDropdownItem(WebElement comboElement, int index) {
         new Select(comboElement).selectByIndex(index)
     }
+
     WebElement getSelectedDropdownItem(WebElement comboBox) {
         new Select(comboBox).getFirstSelectedOption()
     }
+
     void scrollToBottom() {
         runScript("scrollTo(0, document.body.scrollHeight)")
     }
+
     void injectScriptFile(String file) {
-        String script = new FileLoader("scripts\\" + file).toString()
+        String script = new FileLoader(file).toString()
         runScript(script)
     }
 }

@@ -4,6 +4,6 @@ driver:
 uri:
   web: https://demo.nopcommerce.com/
   rest: https://reqres.in
-  RESTJSON: localhost
+  RESTJSON: localhost:81
 wait:
   default_wait: 30

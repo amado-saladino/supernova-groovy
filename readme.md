@@ -16,8 +16,6 @@ Groovy Flavor of [Supernova](https://github.com/amado-saladino/supernova) framew
 Json server could run in a container, container components reside in `json-server` folder.
 
 ```shell
-docker run -d -p 81:80 -v $PWD:/data -e "DB=users.json" json-server:v1
-# or
 docker run -d -p 81:80 -v $PWD:/data -e "DB=users.json" ghcr.io/amado-saladino/json-server:v1
 ```
 
@@ -46,9 +44,9 @@ Enjoy the high flexibility of `Dynamic Programming` of Groovy lang.
 ## Run Custom Tests
 
 ```shell
-gradle clean test --tests TestTwo  # class
-gradle clean test --tests TestTwo.*json*  # pattern of method
-gradle clean test --tests TestTwo."use excel sheet as data source"  # a specific method
+gradle clean test --tests TestDataSource  # class
+gradle clean test --tests TestDataSource.*json*  # pattern of method
+gradle clean test --tests TestDataSource."use excel sheet as data source"  # a specific method
 ```
 
 ## Run in Docker
@@ -62,13 +60,13 @@ docker build -t gradle-test .
 ### Run test
 
 ```sh
-docker run -v `pwd`:/app -v gradle-repo:/root/.gradle/caches/modules-2/files-2.1 -u root amadosaladino/selenium-gradle
+docker run -v `pwd`:/app -v gradle-repo:/root/.gradle/caches/modules-2/files-2.1 amadosaladino/selenium-gradle
 ```
 
 ### Run a specific test method
 
 ```sh
-docker run -v gradle-repo:/root/.gradle/caches/modules-2/files-2.1 -v `pwd`:/app -u root amadosaladino/selenium-gradle clean test --tests TestOne."show page elements"
+docker run -v gradle-repo:/root/.gradle/caches/modules-2/files-2.1 -v `pwd`:/app amadosaladino/selenium-gradle clean test --tests TestHome."show page elements"
 ```
 
 ## View Test Report
@@ -83,4 +81,16 @@ Screenshots taken during test run could be displayed this way:
 
 ```shell
 docker run -d -v $PWD/screenshots:/Pictures:ro -p 81:80 --name gallery ghcr.io/linuxserver/photoshow
+```
+
+## docker compose
+
+```
+docker-compose up -d
+```
+
+## Regression Test
+
+```
+docker-compose start test
 ```

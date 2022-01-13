@@ -18,9 +18,11 @@ class ExcelReader {
             e.getMessage()
         }
     }
+
     private static String readCell(int rowIndex, int colIndex) {
         sheet.getRow(rowIndex).getCell(colIndex).getStringCellValue()
     }
+
     static Iterator<Object> provider(workbook,sheetName){
         openSheet(workbook,sheetName)
         def first_row = sheet.getRow(0) as List  //row headers

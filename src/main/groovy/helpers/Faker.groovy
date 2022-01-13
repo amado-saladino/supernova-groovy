@@ -12,47 +12,65 @@ class Faker {
     Faker() {
         fairy = Fairy.create()
     }
+
+    Fairy getRandom() { this.fairy }
+
     String getFullName() {
         fairy.person(PersonProperties.male()).getFullName()
     }
+
     String getFemaleFirstName() {
         fairy.person(PersonProperties.female()).getFirstName()
     }
+
     String getPassword() {
         fairy.person(PersonProperties.withUsername("Amado")).getPassword()
     }
+
     String getMaleFirstName() {
         fairy.person(PersonProperties.male()).getFirstName()
     }
+
     String getMaleLastName() {
         fairy.person(PersonProperties.male()).getLastName()
     }
+
     String getRandomNumber() {
         fairy.person(PersonProperties.male()).getNationalIdentityCardNumber()
     }
+
     String getAge() {
         String.valueOf(fairy.person(PersonProperties.minAge(14)).getAge())
     }
+
     String getCity() {
         fairy.person(PersonProperties.female()).getAddress().getCity()
     }
+
     String getCityMalePerson() {
         fairy.person(PersonProperties.male()).getAddress().getCity()
     }
+
     String getEmail() {
         fairy.person().getEmail()
     }
+
     String getPhone() {
         fairy.person().getTelephoneNumber()
     }
+
     String getAddress() {
         fairy.person().getAddress().getAddressLine1()
     }
+
+    String getWebsite() { fairy.company().getUrl() }
+
     def getRandomMessage = { fairy.textProducer().sentence() }
 
     RandomDate getRandomDate() {
         return new RandomDate()
     }
+
     private String getMonthName(int monthNumber) {
         String month = "wrong"
         DateFormatSymbols monthsNames = new DateFormatSymbols()

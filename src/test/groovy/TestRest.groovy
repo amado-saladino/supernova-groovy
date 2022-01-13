@@ -43,7 +43,7 @@ class TestRest {
     @DisplayName("json-server users")
     void "add user from json file"() {
         String user_txt = new FileLoader("data/user-payload.json")
-        def res = requests.send("http://${jsonAPI}:81/users", user_txt,Method.POST)
+        def res = requests.send("http://${jsonAPI}/users", user_txt,Method.POST)
         User user = res
         println user
     }
@@ -90,7 +90,7 @@ class TestRest {
         int age = faker.getRandom().person().getAge()
         String city = faker.getCity()
         def payload = new User(['name': name, 'age': age, 'city': city])
-        def user = requests.send("http://${jsonAPI}:81/users/{id}", payload,Method.PUT,3)
+        def user = requests.send("http://${jsonAPI}/users/{id}", payload,Method.PUT,3)
         assertEquals(name, user.name)
         assertEquals(age, user.age)
         assertEquals(city, user.city)
@@ -101,7 +101,7 @@ class TestRest {
         String city = faker.getCity()
         int age = faker.getRandom().person().getAge()
         def payload =  requests.trimPOGO( new User(['age': age, 'city': city]), 'name')
-        def user = requests.send("http://${jsonAPI}:81/users/{id}", payload,Method.PATCH,"BOwl-Rb")
+        def user = requests.send("http://${jsonAPI}/users/{id}", payload,Method.PATCH,"BOwl-Rb")
         println user.toString()
         assertEquals(age, user.age)
         assertEquals(city, user.city)
