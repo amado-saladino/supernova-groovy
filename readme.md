@@ -94,3 +94,5 @@ docker-compose up -d
 ```
 docker-compose start test
 ```
+
+> **Note** When running `docker-compose`, edit `src/resources/config.yml` and set `RESTJSON` property to `json-server:80`
